@@ -45,7 +45,7 @@ Route::get('/products/{id}',[ProductController::class,'show'])->name('products.s
 
 //Authentication for login and register
 
-Route::view('','index')->middleware('guest')->name('index');
+Route::view('/','index')->middleware('guest')->name('index');
 //Route::view('index','index')->middleware('guest')->name('index');
 
 
