@@ -25,9 +25,11 @@ class RegisterController extends Controller
         $user->password = Hash::make($request->input('password'));
         $user->save();
         //return "successful";
-        
-       // Auth::login($user);
-        return redirect('/login');
+        // Auth::login($user);
+        return "<script> alert('You are Successfully Registered .Go and login now')</script>"
+        . redirect('/login')
+        ;
+      
 
     }
 }

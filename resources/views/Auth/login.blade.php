@@ -31,7 +31,7 @@
         class="form-control-lg py-5"
         style="height:150px;min-height:60vh;width:150px;min-width:60vh;padding:20px 40px;box-shadow:0px 2px 5px lightblue;">
       
-             <label for="" class="form-label">email</label>
+             <label for="" class="form-label">Email</label>
              <input type="text" class="form-control mb-3" name="email"
               placeholder="xyz@gmail.com" value="{{ old('email') }}" >
  
@@ -46,8 +46,10 @@
 
 @csrf
         </form>
-       
     </div>
+    <button class="btn btn-dark" style="position: absolute;bottom:100px;right:100px;">
+        <a href="{{ route('index') }}" class="text-decoration-none text-white">Back</a>
+       </button>
 </body>
 </html>
 </div>

@@ -31,11 +31,20 @@ class AdminController extends Controller
     }
     public function totalOrders(){
         $users = User::all();
+        //$users = User::query()->paginate(10);
+        //$users = User::paginate(10);
+        //$users = User::orderBy('id','desc')->paginate(3);
         $totalOrders =DB::table('orders')
         ->join('products','orders.product_id','=','products.id')
         ->join('users','orders.user_id','=','users.id')
          ->get();
-      
+        /*
+        $totalOrders = Order::orderBy('id')->paginate(5)
+        ->join('products','orders.product_id','=','products.id')
+        ->join('users','orders.user_id','=','users.id')
+         ->get();
+         */
+        // $customers = Customer::orderBy('id','desc')->paginate(3);
         return view('admin.totalorders',compact('totalOrders'));
     }
 

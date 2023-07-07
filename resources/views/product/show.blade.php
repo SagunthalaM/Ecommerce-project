@@ -57,7 +57,7 @@ $total = ProductController::cartItem();
         {{Auth()->user()->username}}
       </button>
       <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="logout">Logout</a></li>
+        <li><a class="dropdown-item" href="/logout">Logout</a></li>
       </ul>
     </div>
     <div style="position :absolute;top:10px;right:130px;">

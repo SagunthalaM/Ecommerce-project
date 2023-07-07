@@ -31,9 +31,9 @@
         style="height:150px;min-height:75vh;width:150px;min-width:70vh;box-shadow:0px 2px 5px lightblue;padding:10px 0">
             <label for="" class="form-label">UserName</label>
             <input type="text" class="form-control mb-3" name="username"
-             placeholder="username" value="{{ old('username') }}">
+             placeholder="username" value="{{ old('username') }}" required>
 
-             <label for="" class="form-label">email</label>
+             <label for="" class="form-label">Email</label>
              <input type="text" class="form-control mb-3" name="email"
               placeholder="xyz@gmail.com" value="{{ old('email') }}">
 
@@ -51,10 +51,12 @@
              
                 <a href="{{ URL::to('login') }}" style="margin-left:17%;">Already have an account</a>
              
-
 @csrf
         </form>
     </div>
+    <button class="btn btn-dark" style="position: absolute;bottom:100px;right:100px;">
+        <a href="{{ route('index') }}" class="text-decoration-none text-white">Back</a>
+       </button>
 </body>
 </html>
 </div>

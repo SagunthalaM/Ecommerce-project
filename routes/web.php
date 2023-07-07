@@ -46,6 +46,7 @@ Route::get('/products/{id}',[ProductController::class,'show'])->name('products.s
 //Authentication for login and register
 
 Route::view('','index')->middleware('guest')->name('index');
+//Route::view('index','index')->middleware('guest')->name('index');
 
 
 Route::view('register','Auth.register')->middleware('guest');
@@ -61,13 +62,13 @@ Route::post('authenticate',[LoginController::class,'authenticate']);
 Route::get('logout',[LoginController::class,'logout']);
 
 //Product and order details
-Route::post('/add_to_cart',[ProductController::class,'addToCart']);
-Route::get('/cartlist',[ProductController::class,'cartList']);
-Route::get('removecart/{id}',[ProductController::class,'removeCart']);
-Route::get('ordernow',[ProductController::class,'orderNow']);
+Route::post('/add_to_cart',[ProductController::class,'addToCart'])->middleware('auth');
+Route::get('/cartlist',[ProductController::class,'cartList'])->middleware('auth');
+Route::get('removecart/{id}',[ProductController::class,'removeCart'])->middleware('auth');
+Route::get('ordernow',[ProductController::class,'orderNow'])->middleware('auth');
 Route::post('orderplace',[ProductController::class,'orderPlace']);
-Route::get('myorders',[ProductController::class,'myOrders']);
-Route::get('totalorders',[AdminController::class,'totalOrders']);
+Route::get('myorders',[ProductController::class,'myOrders'])->middleware('auth');
+Route::get('totalorders',[AdminController::class,'totalOrders'])->middleware('auth');
 
 
 
