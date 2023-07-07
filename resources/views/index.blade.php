@@ -34,9 +34,13 @@
     <div class="row col-sm-6 bg-light" style="box-shadow:0px 4px 3px rgb(0, 170, 255); padding:10px 20px;">
         <h4 class=" text-center">User Login here</h4>
         <img src="images/user3.png" alt="admin-image">
-        <button class="btn btn-info my-4 ">
-            <a href="login" class=" fs-5 text-white text-decoration-none">User Login </a>
-        </button>
+       <a href="login" class=" fs-5 text-white text-decoration-none">
+        <button class="btn btn-info my-4  justify-content-center fs-5 text-white " 
+        style="margin-left:20%;">
+                     
+                User Login
+            </button> </a>
+       
     </div>
     </div>
 
