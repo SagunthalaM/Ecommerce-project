@@ -33,7 +33,7 @@
             <input type="text" class="form-control mb-3" name="username"
              placeholder="username" value="{{ old('username') }}">
 
-             <label for="" class="form-label">email</label>
+             <label for="" class="form-label">Email</label>
              <input type="text" class="form-control mb-3" name="email"
               placeholder="xyz@gmail.com" value="{{ old('email') }}">
 
