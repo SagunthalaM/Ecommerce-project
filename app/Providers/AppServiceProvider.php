@@ -8,7 +8,7 @@ use App\Repository\ProductRepository;
 
 use App\Repository\IAdminRepository;
 use App\Repository\AdminRepository;
-
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +27,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Paginator::useBootstrap();
     }
 }

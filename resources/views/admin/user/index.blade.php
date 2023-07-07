@@ -51,6 +51,17 @@
              
               </table>
             </div>
+           <div class="col-md-12">
+            <!-- here we are adding use Illuminate/pagination/paginator
+            in the AppServiceProvider.php and 
+            also
+              public function boot(): void
+              {
+                  Paginator::useBootstrap();
+              } -->
+            {!! $users->appends(['sort'=>''])->links() !!}
+           </div>
+
             <!-- /.card-body -->
           </div>
           <!-- /.card -->
