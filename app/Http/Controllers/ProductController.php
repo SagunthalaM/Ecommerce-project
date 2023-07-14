@@ -9,7 +9,9 @@ use App\Repository\IProductRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-//use Session;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Session;
 
 class ProductController extends Controller
 {
@@ -32,9 +34,10 @@ class ProductController extends Controller
     
     public function store(Request $request){
         $request->validate([
-            'picture'=> 'required',
-            'title'=>'required',
-            'price'=>'required|integer'
+            'picture'=> 'required|image|mimes:png,jpg,jpeg,svg,webp|',
+            'title'=>'required|regex:/^[^\d]+$/|string|',
+            'price'=>'required|integer',
+            'description' =>'required|'
         ]);
 
         $data = $request->all();
@@ -48,36 +51,81 @@ class ProductController extends Controller
 
         $this->product->createProduct($data);
         //return dd($request->all());
-       return redirect('/admin/products');
+        // Session::flash('success', 'Order placed successfully!');
+            //Session::flash('class','success');
+       return redirect('/admin/products')->with('success','Product Created Successfully');
 
     }
 
     public function show($id){
+        $product = Product::find($id);
+
+        if (!$product) {
+            return response()->view('errors.product_not_found', [], 404);
+        }
+    
+        // Access the product properties and perform further actions
+        $title = $product->title;
         $product =  $this->product->getSingleProduct($id);
         return view('product.show')->with('product',$product);
     }
     
     public function edit($id){
         $product =  $this->product->editProduct($id);
+        if(!$product){
+            return response()->view('errors.product_not_found',[],404);
+        }
+        $id = $product->id;
+
         return view('product.edit')->with('product',$product);
     }
     
     public function update(Request $request, $id)
     {
-        // validate and store data
         $request->validate([
-        //    'picture' => 'required',
-            'title' => 'required',
-            'price' => 'required',
-            'description' => 'required'
+            'title' => 'required|string',
+            'price' => 'required|integer',
+            'description' => 'required',
         ]);
+        $product = Product::findOrFail($id);
         
-        $data = $request->all();
-        
-        $this->product->updateProduct($id, $data);
-       // return dd($request->all());
-        return redirect('admin/products');
+        $product->title = $request->input('title');
+        $product->price = $request->input('price');
+        $product->description = $request->input('description');
+        if($request->hasfile('image')){
+            $destination = 'images/'.$product->picture;
+            if(File::exists($destination)){
+                File::delete($destination);
+            }
 
+            $request->validate([
+                'image' => 'image|mimes:png,jpg,jpeg,svg,webp',
+            ]);
+            $image = $request->file('picture');
+            $extention = $image->getClientOriginalExtension();
+            $filename = time().'.'.$extention;
+            $image->move('images/',$filename);
+            $product->picture = $filename;
+        }         
+        $product->update();
+        return redirect()->back()->with('success','Product updated successfully');
+
+   /*   $product = Product::findOrFail($id);
+      $product->title = $request->input('title');
+      $product->price = $request->input('price');
+      $product->description = $request->input('description');
+
+      if ($request->hasFile('image')) {
+          $image = $request->file('image');
+          $name = 'images/' . $image->getClientOriginalName();
+          $image->move(public_path('images'), $name);
+          $product->image = $name;
+      }
+
+      $product->save();
+
+        return redirect('admin/products')->with('success','Product Updated Successfully');
+*/
     }
     function addToCart(Request $request){
         //return "hello";
@@ -85,7 +133,7 @@ class ProductController extends Controller
         $cart->user_id=Auth::id();
         $cart->product_id = $request->product_id;
         $cart->save();
-        return redirect('/products');
+        return redirect('/products')->with('success','Product added to your cartlist ');
     }
 
     static function cartItem()
@@ -94,9 +142,8 @@ class ProductController extends Controller
         return Cart::where('user_id',$userId)->count();
     }
     function cartList(){
-        $product = DB::table('cart')
-        ->join('products','cart.product_id','=','products.id')
-        ->select('products.*','cart.id as cartId')->get();
+        $product = Cart::join('products','cart.product_id','=','products.id')
+        ->select('products.*','cart.id as cartId')->paginate(2);
         return view('product/cartlist',['product' => $product]);
       
     }
@@ -106,11 +153,21 @@ class ProductController extends Controller
     }
     public function orderNow(){
         $userId = Auth::id();
+        $product = Cart::join('products','cart.product_id','=','products.id')
+        ->select('products.*','cart.id as cartId ')
+        ->first();
+        if($product){
+            
+        $userId = Auth::id();
         $totalAmount =  $product = DB::table('cart')
         ->join('products','cart.product_id','=','products.id')
         ->select('products.*','cart.id as cartId')
         ->sum('products.price');
         return view('product/ordernow',['totalAmount' => $totalAmount]);
+        }else{
+            return redirect('noitem')->with('success',"No item avaiable in Your cart");
+        ;
+        }
     }
     public function orderPlace(Request $request)
     {
@@ -134,14 +191,16 @@ class ProductController extends Controller
             
         }
          $request->input();
-         return redirect('/products');
+           // Session::flash('success', 'Order placed successfully!');
+            //Session::flash('class','success');
+       
+            return redirect('/products')->with('success','Order Placed Successfully');
     }
     public function  myOrders(){
          $userId = Auth::id();
-         $orders =DB::table('orders')
-        ->join('products','orders.product_id','=','products.id')
+         $orders =Order::join('products','orders.product_id','=','products.id')
         ->where('orders.user_id',$userId)
-        ->get();
+        ->paginate(2);
         return view('product/myorders',['orders'=> $orders]);
     
     }

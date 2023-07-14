@@ -1,66 +1,69 @@
 @extends('backend.layouts.app')
-
 @section('content')
+<div class="content-wrapper" style="height: 1000px;min-height:100vh;background-color:white;">
 
-<div class="content-wrapper">
-    <h1 class="text-center">Admin All Table Products</h1>
-<br>
-
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-12" style="display:flex">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Actions</th>
-
-                    </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($products as $product)
-                            <tr>
-                                <th scope="row">{{ $product->id }}</th>
-                                <td>{{ $product->title }}</td>
-                                <td>{{ $product->price }}</td>
-                                <td>{{ $product->description }}</td>
-                                <td>
-                                    <a href="{{ route('products.create') }}" class="btn btn-primary text-dark">
-                                        <i class="fa-solid fa-plus"></i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="{{ route('products.show',$product->id) }}" class="btn btn-info">
-                                        <i class="fa-solid fa-eye fs-5 me-3"></i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="{{ route('products.edit',$product->id) }}" class="btn btn-warning text-dark">
-                                        <i class="fa-solid fa-pen-to-square fs-5 me-3"></i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <form action="{{ route('admin.products.delete',$product->id) }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-danger" type="submit">
-                                                <i class="fa-solid fa-trash fs-5 me-3"></i>
-                                            </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>All Products</title>
+   
+    </head>
+    <body >
+       
+      <section style="padding-top:10px">
+    
+        @if(session('success'))
+      
+        <div class="alert alert-warning  alert-dismissible  show " role="alert" style="margin:5px 10px">
+         {{ session('success') }}
+         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+       </div>
+       @endif
+        <div class="container mb-5">
+            <div class="row">
+            <div class="col">
+            <table id="product" class="table table-striped   table-hover" style="100%" >
+            <thead class="table-dark" style="margin-left:10px" >
+                <tr>
+                    
+                    <th>P/Id</th>
+                    <th>Product</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+       
+        </table>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-
-
+    
+    </section>
+    
+        <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#product').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: "{{ route('admin.products') }}",
+                    columns: [
+                       // { data: 'DT_RowIndex',name:'DT_RowIndex',orderable:false},
+                        { data: 'id', name:'id'},
+                        { data: 'picture', name:'picture'},
+                        { data: 'title', name: 'title' },
+                        { data: 'price', name: 'price' },
+                        { data: 'description', name:'description'},
+                        { data: 'actions', name:'actions'}
+                      ]
+                });
+            });
+        </script>
+    </body>
+    </html>
 </div>
 
 @endsection

@@ -15,19 +15,18 @@ class RegisterController extends Controller
 {
     public function store(Request $request){
         $request->validate([
-            'username'=>'required',
-            'email'=>'required|unique:users',
-            'password'=>'required|confirmed|min:8'
+            'username'=>'required|regex:/^[^\d]+$/|string',
+            'email'=>'required|regex:/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/|unique:users',
+            'password'=>'required|min:8|confirmed|'
         ]);
         $user = new User;
         $user->username = $request->input('username');
         $user->email = $request->input('email');
         $user->password = Hash::make($request->input('password'));
-        $user->save();
+         $user->save();
         //return "successful";
         // Auth::login($user);
-        return "<script> alert('You are Successfully Registered .Go and login now')</script>"
-        . redirect('/login')
+        return  redirect('/login')->with('success','User Created Successfully')
         ;
       
 

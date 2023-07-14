@@ -18,12 +18,12 @@ $total = ProductController::cartItem();
 </head>
 <body>
     <div class="custom-product ms-5 " style="margin-top:80px">
-      @if($errors->any())
-      <ul>
-          {!! implode('',$errors->all('<li>
-              <span class="text-danger">:message</span></li>')) !!}
-      </ul>
+       @if(session('success'))
       
+       <div class="alert alert-success  alert-dismissible fade show" role="alert" style="margin-right: 50px">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
       @endif
         <table class="table table-hover mt-5" style="width:1100px">
            
@@ -50,19 +50,35 @@ $total = ProductController::cartItem();
             <form action="orderplace" method="post" class="me-5">
                 @csrf
                 <div class="mb-3 mt-3">
-                  <label for="" class="form-label">Address</label>
-                <textarea name="address" id="" class="form-control me-5" 
-                value="{{old('address')}}" placeholder="address"></textarea>
+                  <label for="address" class="form-label">
+                    Address
+                    <span style="color:red;">*</span>
+                  </label> <br>
+                <textarea name="address" id="address" 
+                class="form-control @error('address') is-invalid @enderror me-5" 
+                value="{{ old('address') }}" placeholder="address"></textarea>
+                @error('address')
+                  <div class="invalid-feedback"><span class="btn btn-danger">{{ $message }}</span></div>
+                @enderror
                 </div>
                 <div class="mb-3">
-                  <label for=""  class="form-label" >Payment Method</label><br><br>
-                <input type="radio" value="cash" name="payment"><span> Online payment</span><br><br>
-                <input type="radio"  value="cash" name="payment"><span> EMI payment</span><br><br>
-                <input type="radio" value="cash" name="payment"><span> Cash On Delivery</span>
-                
+                  <label for="payment" 
+                   class="form-label @error('payment') is-invalid  
+                  @enderror" >
+                    Payment Method <span style="color:red;">*</span>
+                  </label><br>
+                  @error('payment')
+                  <div class="invalid-feedback"><span class="btn btn-danger">{{ $message }}</span></div>
+                  @enderror
+                  <br>
+                <input type="radio" value="cash" id="payment" name="payment"><span> Online payment</span><br><br>
+                <input type="radio"  value="cash" id="payment" name="payment"><span> EMI payment</span><br><br>
+                <input type="radio" value="cash" id="payment" name="payment"><span> Cash On Delivery</span>
+             
                 </div>
                
-                <button type="submit" class="btn btn-primary mb-5">Order Now</button>
+                <button type="submit" class="btn btn-primary mb-5">Place Your Order</button>
+               <a href="cartlist" class="btn btn-dark ms-2" style="margin-bottom:3rem">Back</a>
               </form>
           </div>
 
@@ -76,27 +92,26 @@ $total = ProductController::cartItem();
               <li><a class="dropdown-item" href="logout">Logout</a></li>
             </ul>
           </div>
-          <div style="position :absolute;top:10px;right:120px;">
-            <button class="btn btn-primary" > <a href="{{ route('products.index') }}" class="text-decoration-none text-white ">
+          <div style="position :absolute;top:10px;right:180px;">
+            
+              <a href="{{ route('products.index') }}" class="text-decoration-none text-white ">
+                <button class="btn btn-primary" >
              Home
-             </a>
+             
            </button>
+          </a>
            </div>
       
-          <div style="position :absolute;top:10px;right:200px;">
-           <button class="btn btn-primary" > <a href="/cartlist" 
+          <div style="position :absolute;top:10px;right:280px;">
+            <a href="/cartlist" 
             class="text-decoration-none text-white ">
-               Cart({{ $total }})
-            </a>
-          </button>
+            <button class="btn btn-primary" >    Cart({{ $total }})
+           </button>
+           </a>
           </div>
        </div>
     </div>
 
-
-
-
-    
 <!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 

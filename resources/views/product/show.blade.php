@@ -19,7 +19,7 @@ $total = ProductController::cartItem();
 <body>
   
 
-<h1 class="text-center mt-2">{{ $product->title }} | Detail</h1>
+<h1 class="text-center mt-2">{{ $product->title }} </h1>
 <hr>
 <br>
 
@@ -47,12 +47,15 @@ $total = ProductController::cartItem();
           </form>
               <br>
           <br><br>
-          <a href="{{ route('products.index') }}" class="btn btn-warning">Go Home</a>
-          
+          @if (auth()->user()->role == 'Admin')
+          <a href="{{ route('admin.products') }}" class="btn btn-warning">Go Home</a>           
+           @else
+           <a href="{{ route('products.index') }}" class="btn btn-warning">Go Home</a>           
+          @endif
         </div>
     </div>
    
-    <div class="dropdown" style="position:absolute;top:10px;right:10px;">
+    <div class="dropdown" style="position:absolute;top:10px;right:20px;">
       <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
         {{Auth()->user()->username}}
       </button>
@@ -60,18 +63,20 @@ $total = ProductController::cartItem();
         <li><a class="dropdown-item" href="/logout">Logout</a></li>
       </ul>
     </div>
-    <div style="position :absolute;top:10px;right:130px;">
-      <button class="btn btn-primary" > <a href="{{ route('products.index') }}" class="text-decoration-none text-white ">
-       Home
-       </a>
-     </button>
+    <div style="position :absolute;top:10px;right:180px;">
+      @if (auth()->user()->role == 'Admin')
+      <a href="{{ route('admin.products') }}" class="btn btn-primary"> Home</a>           
+       @else
+       <a href="{{ route('products.index') }}" class="btn btn-primary"> Home</a>           
+      @endif
      </div>
 
-    <div style="position :absolute;top:10px;right:210px;">
-     <button class="btn btn-primary" > <a href="/cartlist" class="text-decoration-none text-white ">
+    <div style="position :absolute;top:10px;right:270px;">
+     <a href="/cartlist" class="text-decoration-none text-white ">
+      <button class="btn btn-primary" >
          Cart({{ $total }})
-      </a>
     </button>
+  </a>
     </div>
 </div>
 

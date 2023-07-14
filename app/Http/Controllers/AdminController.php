@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Cart;
 use DB;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\DataTables;
 
 class AdminController extends Controller
 {
@@ -19,15 +20,62 @@ class AdminController extends Controller
         $this->admin = $admin;
     }
 
-    public function adminGetAllProducts(){
+   /*
+     public function adminGetAllProducts(){
         $products =$this->admin->adminGetAllProducts();
         return view('admin.products')->with('products',$products);
+    }
+     */ 
+    public function adminGetAllProducts(Request $request){
+        if($request->ajax()){
+            $product = Product::latest()->get();
+            return DataTables::of($product)
+           // ->addIndexColumn()
+            ->addColumn('actions',function($edit){
+               return '<head>
+               <!-- Bootstrap-->
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>  
+ 
+               <!-- Font awesome -->
+               <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+           
+           </head>
+               <a href="'.route('products.show',$edit->id).'" class="text-decoration-none text-dark ">
+               <i class="fa-solid fa-eye fs-5"></i>
+               </a>
+               <a href="'.route('products.edit',$edit->id).'" class="text-decoration-none text-dark" >
+               <i class="fa-solid fa-pen-to-square fs-5"></i> 
+               </a>
+                <form action="'.route('admin.products.delete',$edit->id).'" method="post" style="display:inline">
+                '.csrf_field().'
+                '.method_field('DELETE').'
+                <button type="submit" class="btn py-0 px-0" onclick="return confirm(\'are you sure to delete?\')">
+                <i class="fa-solid fa-trash fs-5 "></i>
+                </button>
+                </form>
+               '
+               ;
+            })->rawColumns(['actions'])
+            ->make(true);
+            
+        }
+        return view('admin.products');
     }
 
     //delete a single product
     public function adminDeleteProduct($id){
-        $this->admin->adminDeleteProduct($id);
-        return redirect('/admin/products');
+        try {
+            
+           $this->admin->adminDeleteProduct($id);
+        
+            return redirect('admin/products')->with('success','Product Deleted Successfully!');
+        } catch (ModelNotFoundException $exception) {
+            return response()->view('errors.product_not_found', [], 404);
+        }
+
+        //$this->admin->adminDeleteProduct($id);
+        //return redirect('/admin/products')->with('success','Product Deleted Successfully!');
     }
     public function totalOrders(){
         $users = User::all();
@@ -37,7 +85,8 @@ class AdminController extends Controller
         $totalOrders =DB::table('orders')
         ->join('products','orders.product_id','=','products.id')
         ->join('users','orders.user_id','=','users.id')
-         ->get();
+        ->get();
+        // ->paginate(5);
         /*
         $totalOrders = Order::orderBy('id')->paginate(5)
         ->join('products','orders.product_id','=','products.id')
