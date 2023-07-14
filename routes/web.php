@@ -53,7 +53,7 @@ Route::view('register','Auth.register')->middleware('guest');
 
 Route::post('store',[RegisterController::class,'store']);
 
-Route::view('home','home')->middleware('auth');
+Route::view('home','home')->middleware('isAdmin')->middleware('auth');
 
 Route::view('login','Auth.login')->middleware('guest')->name('login');
 
