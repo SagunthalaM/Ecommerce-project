@@ -9,21 +9,22 @@
              
    </head>
     <div class="row">
-       <div class="col-lg-1">
-        @if(session('success'))
-      
-        <div class="alert alert-success  alert-dismissible fade show" role="alert" style="margin-right: 50px">
-         {{ session('success') }}
-         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-       </div>
-       @endif
+       <div class="">
+        @if(Session::has('success'))
+        <div class="alert alert-success ">
+            {{ Session::get('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>    
+     @endif
        </div>
 
        <div class="col-lg-10">
         <!-- Card start -->
-      <div class="card  ">
+      <div class=" container " style="box-shadow:1px 2px 5px gray ;padding:20px 20px;margin:10px 10px 10px 100px;">
         <div class="card-header">
-            <h5 class="card-title">
+            <h5 class="">
                 Add User
             </h5>
         </div>

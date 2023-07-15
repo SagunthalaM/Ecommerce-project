@@ -21,32 +21,16 @@
     </body>
     </html>  
     <h2>Create Product</h2>
-    <hr>
-    @if(session('success'))
-      
-    <div class="alert alert-warning  alert-dismissible  show " role="alert" style="margin:5px 10px">
-     {{ session('success') }}
-     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-   </div>
-   @endif
+    @if(Session::has('success'))
+    <div class="alert alert-success ">
+        {{ Session::get('success') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>    
+ @endif
     <form action="{{ route('products.store') }}" enctype="multipart/form-data" method="POST" novalidate>
         @csrf
-
-        <div class="mb-3">
-            <label for="picture" class="form-label">Choose Picture
-              <span style="color:red;">*</span>
-            </label>
-            <input class="form-control @error('picture')
-              is-invalid
-            @enderror
-            " type="file" name="picture" id="picture">
-            <div class="text-danger">
-              @error('picture')
-                {{ $message }}
-              @enderror
-            </div>
-          </div>
-
         <div class="mb-3">
             <label for="title" class="form-label">Title <span style="color:red;">*</span></label>
             <input type="text" class="form-control @error('title')
@@ -89,6 +73,21 @@
               @enderror
             </div>
           </div>
+          <div class="mb-3">
+            <label for="picture" class="form-label">Choose Picture
+              <span style="color:red;">*</span>
+            </label>
+            <input class="form-control @error('picture')
+              is-invalid
+            @enderror
+            " type="file" name="picture" id="picture">
+            <div class="text-danger">
+              @error('picture')
+                {{ $message }}
+              @enderror
+            </div>
+          </div>
+
 
           <div>
             

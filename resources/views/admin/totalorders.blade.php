@@ -20,16 +20,17 @@
 @section('content')
 
 <div class="content-wrapper" style="background-color: white">
-    <h1 class="text-center">Users Order Details</h1>
+    <h3 class="text-center">Users Order Details</h3>
 
 <div class="container">
     <div class="row">
-        <div class="col-md-12" style="display:flex">
+        <div class="col-md-12" style="display:flex;width:100%">
                 <table class="table table-hover table-striped">
                     <thead class="table-dark">
                     <tr><!-- 
                         <th>Id</th> -->
-                        <th scope="col">Product Id</th>
+                        <th scope="col">User Id</th>
+                        <th>Product Id</th>
                         <th scope="col">User Name</th>
                         <th scope="col">Item Image</th>
                         <th scope="col">Price</th>
@@ -44,13 +45,14 @@
                             <tr>
                                 <!-- 
                                 <th> $index+1 </th>  -->
-                                <th scope="row">{{ $orders->id }}</th> 
+                                <th scope="row">{{ $orders->user_id }}</th> 
+                                <th>{{ $orders->product_id }}</th>
                                <td>{{ $orders->username}}</td>
                                <td>
                                 <a href="products/{{ $orders->id }}">
-                                    <img src="{{ $orders->picture }}" 
-                                    style="object-fit: contain;width:100px;min-width:10vh;height:50px;"
-                                    class="trending-image" alt="">
+                                    <img src="{{ $orders->picture }}" class="my-0 mx-0"
+                                    style="object-fit: contain;width:100px;min-width:5vh;height:30px;"
+                                    alt="">
                                 </a>
                                </td>   
                                 <td>{{ $orders->price }}</td>
@@ -62,9 +64,11 @@
                         @endforeach
                     </tbody>
                 </table>
+                
             </div>
+            
+            {!! $totalOrders->appends(['sort'=>''])->links() !!} 
             <div>
-                <!-- {! $totalOrders->appends(['sort'=>''])->links() !!} --> 
             </div>
     </div>
 </div>

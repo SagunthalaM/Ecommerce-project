@@ -37,7 +37,7 @@ $total = ProductController::cartItem();
 <div class="container" style="margin-left:120px;margin-right:100px;">
   @if(session('success'))
       
-  <div class="alert alert-success  alert-dismissible fade show" role="alert" style="margin-right: 50px">
+  <div class="alert alert-success  alert-dismissible  show" role="alert" style="margin-right: 50px">
    {{ session('success') }}
    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
  </div>

@@ -54,7 +54,7 @@ $total = ProductController::cartItem();
                     Address
                     <span style="color:red;">*</span>
                   </label> <br>
-                <textarea name="address" id="address" 
+                <textarea name="address" id="address" rows="5" cols="155" 
                 class="form-control @error('address') is-invalid @enderror me-5" 
                 value="{{ old('address') }}" placeholder="address"></textarea>
                 @error('address')
@@ -66,14 +66,12 @@ $total = ProductController::cartItem();
                    class="form-label @error('payment') is-invalid  
                   @enderror" >
                     Payment Method <span style="color:red;">*</span>
-                  </label><br>
+                  </label>
                   @error('payment')
                   <div class="invalid-feedback"><span class="btn btn-danger">{{ $message }}</span></div>
                   @enderror
                   <br>
-                <input type="radio" value="cash" id="payment" name="payment"><span> Online payment</span><br><br>
-                <input type="radio"  value="cash" id="payment" name="payment"><span> EMI payment</span><br><br>
-                <input type="radio" value="cash" id="payment" name="payment"><span> Cash On Delivery</span>
+               <input type="radio" value="cash" id="payment" name="payment"><span> Cash On Delivery</span>
              
                 </div>
                

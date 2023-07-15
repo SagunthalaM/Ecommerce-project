@@ -35,6 +35,7 @@ class UserController extends Controller
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
             
             </head>
+                
                 <a href="'.route('admin.user.edit', $user->id).'"
                  class="text-decoration-none me-3" style="color:black;" >
                 <i class="fa-solid fa-pen-to-square fs-5"></i> 
@@ -75,12 +76,9 @@ class UserController extends Controller
 
         $insert = DB::table('users')->insert($data);
         if($insert){
-          //Session::flash('success', 'User Created successfully!');
-          //Session::flash('class','success');
-           // return back();
-           return redirect('admin/users')->with('success','User Created Successfully');
-            
-            //echo "successfull";
+          Session::flash('success', 'User Created successfully!');
+          return back();
+           //return redirect('admin/users');
         }
         else{
             echo "something is wrong";
@@ -107,11 +105,10 @@ class UserController extends Controller
         $data['password'] = Hash::make($request->password);
         $update = DB::table('users')->where('id',$id)->update($data);
         if($update){
-            //return redirect('all-user'); 
-           // return back();
-            return redirect('admin/users')->with('success','user updated successfully');
-            
-            //echo "User updated successfully";
+            Session::flash('success','User Updated Successfully!');
+             
+            return back();
+           // return redirect('admin/users')->with('success','user updated successfully');
         }
         else{
             echo "something is wrong";
@@ -136,7 +133,11 @@ class UserController extends Controller
             $delete = DB::table('users')->where('id',$id)->delete();
             if($delete)
             {
-                return redirect('admin/users')->with('success','user deleted successfully');;
+                Session::flash('danger', 'Record deleted successfully.');
+
+                // Redirect back to the previous page or any other desired route
+                return redirect()->back();
+               // return redirect('admin/users')->with('success','user deleted successfully');;
             // echo 'User Successfully Deleted';
             }
             else{

@@ -45,15 +45,15 @@ class ProductController extends Controller
         //picture upload 
         if($image = $request->file('picture')){
             $name = 'images/'.$image->getClientOriginalName();
-            $image->move(public_path('images'),$name);
+            $image->move(public_path('images-1'),$name);
             $data['picture']="$name";
         }
 
         $this->product->createProduct($data);
         //return dd($request->all());
-        // Session::flash('success', 'Order placed successfully!');
+         Session::flash('success', 'Product Created successfully!');
             //Session::flash('class','success');
-       return redirect('/admin/products')->with('success','Product Created Successfully');
+       return back();
 
     }
 
@@ -63,6 +63,7 @@ class ProductController extends Controller
         if (!$product) {
             return response()->view('errors.product_not_found', [], 404);
         }
+        
     
         // Access the product properties and perform further actions
         $title = $product->title;
@@ -83,50 +84,36 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'picture'=> '|image|mimes:png,jpg,svg,webp,jpef',
             'title' => 'required|string',
             'price' => 'required|integer',
             'description' => 'required',
         ]);
-        $product = Product::findOrFail($id);
-        
-        $product->title = $request->input('title');
-        $product->price = $request->input('price');
-        $product->description = $request->input('description');
-        if($request->hasfile('image')){
-            $destination = 'images/'.$product->picture;
-            if(File::exists($destination)){
-                File::delete($destination);
+        //here I made a huge mistake like  instead of this $product->picture 
+        // I put $product->image unknown field 
+        //and also gived path for $destination like 'images-1'.$product->picture
+        //but I already add the path in the default ,so don't do this again
+            $product = Product::findOrFail($id);
+            $product->title = $request->input('title');
+            $product->price = $request->input('price');
+            $product->description = $request->input('description');
+
+                if ($request->hasFile('picture')) {
+                $destination = $product->picture;
+                if(File::exists($destination)){
+                    File::delete($destination);
+                }
+                $image = $request->file('picture');
+                $name = 'images-1/' . $image->getClientOriginalName();
+                $image->move(public_path('images-1'), $name);
+                $product->picture = $name;
             }
 
-            $request->validate([
-                'image' => 'image|mimes:png,jpg,jpeg,svg,webp',
-            ]);
-            $image = $request->file('picture');
-            $extention = $image->getClientOriginalExtension();
-            $filename = time().'.'.$extention;
-            $image->move('images/',$filename);
-            $product->picture = $filename;
-        }         
-        $product->update();
-        return redirect()->back()->with('success','Product updated successfully');
+            $product->update();
+              return redirect()->back()->with('success','Product Updated Successfully');
+            //  return redirect('admin/products')->with('success','Product Updated Successfully');
 
-   /*   $product = Product::findOrFail($id);
-      $product->title = $request->input('title');
-      $product->price = $request->input('price');
-      $product->description = $request->input('description');
-
-      if ($request->hasFile('image')) {
-          $image = $request->file('image');
-          $name = 'images/' . $image->getClientOriginalName();
-          $image->move(public_path('images'), $name);
-          $product->image = $name;
-      }
-
-      $product->save();
-
-        return redirect('admin/products')->with('success','Product Updated Successfully');
-*/
-    }
+            }
     function addToCart(Request $request){
         //return "hello";
         $cart = new Cart;
@@ -203,5 +190,26 @@ class ProductController extends Controller
         ->paginate(2);
         return view('product/myorders',['orders'=> $orders]);
     
+    }
+
+    static function cartTotal()
+    {
+        $userId = Auth::id();
+        return Cart::all()->count();
+    }
+    static function productTotal()
+    {
+        $userId = Auth::id();
+        return Product::all()->count();
+    }
+    static function orderTotal()
+    {
+        $userId = Auth::id();
+        return Order::all()->count();
+    }
+    static function userTotal()
+    {
+        $userId = Auth::id();
+        return User::all()->count();
     }
 }

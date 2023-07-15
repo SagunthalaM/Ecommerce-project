@@ -21,14 +21,14 @@
     <body>
        
       <section style="padding-top:10px">
-       
-        @if(session('success'))
-      
-        <div class="alert alert-warning  alert-dismissible  show " role="alert" style="margin:5px 10px">
-         {{ session('success') }}
-         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-       </div>
-       @endif
+        @if(Session::has('danger'))
+        <div class="alert alert-danger ">
+            {{ Session::get('danger') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>    
+     @endif
        
         <div class="container mb-5">
             <div class="row">

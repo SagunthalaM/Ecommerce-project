@@ -12,6 +12,8 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\Order;
 
+use App\Mail\WelcomeMail;
+use Illuminate\Support\Facades\Mail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -96,7 +98,11 @@ Route::get('admin/delete-user/{id}',[App\Http\Controllers\Admin\UserController::
 
 */
 
-
+//Route for mailing
+Route::get('/email',function(){
+    Mail::to('ecommerce@email.com')->send(new WelcomeMail());
+    return new WelcomeMail();
+});
 
 
 

@@ -12,7 +12,7 @@ class LoginController extends Controller
 {
     public function authenticate(Request $request){
         $request->validate([
-            'email'=>'required|',
+            'email'=>'required|email',
             'password'=>'required|min:8'
         ]);
         $email = $request->input('email') ;
@@ -20,7 +20,10 @@ class LoginController extends Controller
 
         if(Auth::attempt(['email'=>$email,'password'=>$password])){
            $user = User::where ('email',$email)->first();
-           Auth::login($user);
+          // Auth::login($user);
+           //  $request->authenticate();
+             $request->session()->regenerate();
+
            if( $user->role == 'Admin'){
             return redirect('/home');
            }else{
@@ -33,8 +36,11 @@ class LoginController extends Controller
     
         }
         
-        public function logout(){
+        public function logout(Request $request){
             Auth::logout();
+            
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
             return redirect('/login');
         }
 

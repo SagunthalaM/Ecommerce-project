@@ -23,7 +23,7 @@
     <hr>
     @if(session('success'))
       
-    <div class="alert alert-warning  alert-dismissible  show " role="alert" style="margin:5px 10px">
+    <div class="alert alert-success  alert-dismissible  show " role="alert">
      {{ session('success') }}
      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
    </div>
@@ -31,20 +31,6 @@
     
     <form action="{{ route('products.update',$product->id) }}" enctype="multipart/form-data" method="POST">
         @csrf
-
-        <div class="mb-3">
-            <label for="picture" class="form-label">Choose Picture</label>
-            <input class="form-control @error('picture')
-              is-invalid
-            @enderror"
-             type="file" name="picture" id="picture" >
-             <div class="text-danger">
-              @error('picture')
-                {{ $message }}
-              @enderror
-             </div>
-          </div>
-
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
             <input type="text" class="form-control @error('title')
@@ -82,6 +68,19 @@
                   {{ $message }}
                 @enderror
               </div>
+          </div>
+          <div class="mb-3">
+            <label for="picture" class="form-label">Choose Picture</label>
+            <input class="form-control @error('picture')
+              is-invalid
+            @enderror"
+             type="file" name="picture" id="picture" >
+             <img src="{{ asset($product->picture) }}"   style="object-fit: contain;width:50px;min-width:10vh;height:50px;" alt="">
+             <div class="text-danger">
+              @error('picture')
+                {{ $message }}
+              @enderror
+             </div>
           </div>
 <div>
   <button type="submit" class="btn btn-primary">Update Product</button>
