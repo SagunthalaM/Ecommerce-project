@@ -4,7 +4,7 @@ $total = ProductController::cartItem();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,7 +38,8 @@ $total = ProductController::cartItem();
 <div class="container">
   <div class="container">
     <!DOCTYPE html>
-<html>
+
+    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 body {
@@ -215,7 +216,7 @@ function showSlides(n) {
                   <h5 class="card-title">Price: ${{ $product->price }}</h5>
                   <hr>
                   <p class="card-text">{{ $product->description}} </p>
-                  <a href="{{ route('products.show',$product->id) }}" class="btn btn-primary"> Detail</a>
+                  <a href="{{ route('products.show',$product->id),app()->getLocale() }}" class="btn btn-primary"> Detail</a>
                 </div>
               </div>
             @endforeach
@@ -228,7 +229,7 @@ function showSlides(n) {
       {{Auth()->user()->username}}
     </button>
     <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="logout">Logout</a></li>
+      <li><a class="dropdown-item" href="{{ URL::to('logout'),app()->getLocale() }}">Logout</a></li>
     </ul>
   </div>
       <div style="position:absolute;top:10px;right:115px;">

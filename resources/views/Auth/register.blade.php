@@ -2,7 +2,7 @@
 
 <div class="content-wrapper">
     <!DOCTYPE html>
-<html lang="en">
+    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,11 +29,11 @@
         <form action="/store" method="post" 
         class="form-control-lg ps-5 pe-5  "
         style="height:150px;min-height:75vh;width:150px;min-width:70vh;box-shadow:0px 2px 5px lightblue;padding:10px 0">
-            <label for="" class="form-label">UserName</label>
+            <label for="" class="form-label">{{ __('UserName') }}</label>
             <input type="text" class="form-control mb-3" name="username"
              placeholder="username" value="{{ old('username') }}" required>
 
-             <label for="" class="form-label">Email</label>
+             <label for="" class="form-label">{{ __('Email') }}</label>
              <input type="text" class="form-control mb-3" name="email"
               placeholder="xyz@gmail.com" value="{{ old('email') }}">
 
