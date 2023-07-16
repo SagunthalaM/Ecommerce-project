@@ -29,7 +29,8 @@ class ProductRepository implements IProductRepository{
 
     public function updateProduct($id, array $data){
         Product::find($id)->update([
-          //  'picture' => $data['picture'],
+            'picture' => $data['picture'],
+            
             'title' => $data['title'],
             'price' => $data['price'],
             'description' => $data['description']

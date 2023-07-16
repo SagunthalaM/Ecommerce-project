@@ -17,46 +17,60 @@
 </head>
 <body>
     <h1 class="  text-center   py-2  "> Register Page </h1>
-
-    @if($errors->any())
-    <ul>
-        {!! implode('',$errors->all('<li>
-            <span class="text-danger">:message</span></li>')) !!}
-    </ul>
-    
-    @endif
-    <div class="container  fs-5" style="display: flex;justify-content:center;margin-top:50px">
-        <form action="/store" method="post" 
-        class="form-control-lg ps-5 pe-5  "
-        style="height:150px;min-height:75vh;width:150px;min-width:70vh;box-shadow:0px 2px 5px lightblue;padding:10px 0">
-            <label for="" class="form-label">{{ __('UserName') }}</label>
-            <input type="text" class="form-control mb-3" name="username"
-             placeholder="username" value="{{ old('username') }}" required>
-
-             <label for="" class="form-label">{{ __('Email') }}</label>
-             <input type="text" class="form-control mb-3" name="email"
-              placeholder="xyz@gmail.com" value="{{ old('email') }}">
-
-             <label for="" class="form-label">Password</label>
-             <input type="password" class="form-control mb-3" name="password" 
-             placeholder="password" >
-             
-
-             <label for="" class="form-label">Confirm Password</label>
-             <input type="password" class="form-control" name="password_confirmation" 
-             placeholder="confirm password" >
-<br>
-             <button type="submit" class="form-control bg-primary
-             text-white fs-5">Register</button><br>
-             
-                <a href="{{ URL::to('login') }}" style="margin-left:17%;">Already have an account</a>
-             
-@csrf
+   
+    <div class="container  fs-5" 
+    style="width:400px;justify-content:center;margin-top:20px">
+        <form action="/store" class="" method="POST" novalidate>
+            @csrf
+                   
+            <div class="mb-3">
+                <label for="name" class="form-label">Name<span style="color:red;">*</span></label>
+                <input type="text" class="form-control @error('username') is-invalid @enderror" id="name"
+                 name="username" value="{{ old('username') }}"
+                 placeholder="Albert" required>
+                @error('username')
+                   <div class="invalid-feedback"> {{ $message }}</div>
+                @enderror
+            </div>
+        
+            <div class="mb-3">
+                <label for="email" class="form-label">Email<span style="color:red;">*</span></label>
+                <input type="email" placeholder="xyz@gmail.com"
+                 class="form-control @error('email') is-invalid @enderror" id="email" name="email"
+                  value="{{ old('email') }}" required>
+                @error('email')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+        
+            <div class="mb-3">
+                <label for="password" class="form-label">Password<span style="color:red;">*</span></label>
+                <input type="password"
+                placeholder="enter atleast 8 characters"
+                class="form-control @error('password') is-invalid @enderror" id="password" name="password" required>
+                @error('password')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+        
+            <div class="mb-3">
+                <label for="password_confirmation" class="form-label">Confirm Password<span style="color:red;">*</span></label>
+                <input type="password" placeholder="........"
+                class="form-control" id="password_confirmation" name="password_confirmation" required>
+            </div>
+        
+            <button type="submit" class="btn btn-primary">Register</button>
         </form>
+        <div class="container">
+            <a href="{{ URL::to('login') }}" style="">Already Have an Account </a>
+         </div>
     </div>
     <button class="btn btn-dark" style="position: absolute;bottom:100px;right:100px;">
         <a href="{{ route('index') }}" class="text-decoration-none text-white">Back</a>
        </button>
+       <!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
 </div>

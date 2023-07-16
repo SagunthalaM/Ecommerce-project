@@ -34,6 +34,15 @@ $total = ProductController::cartItem();
 </ul>
 
 @endif
+<div class="container" style="margin-left:120px;margin-right:100px;">
+  @if(session('success'))
+      
+  <div class="alert alert-success  alert-dismissible  show" role="alert" style="margin-right: 50px">
+   {{ session('success') }}
+   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+ </div>
+ @endif
+</div>
 
 <div class="container">
   <div class="container">
@@ -224,7 +233,7 @@ function showSlides(n) {
     </div>
 </div>
    <div>
-  <div class="dropdown" style="position:absolute;top:10px;right:10px;">
+  <div class="dropdown ms-5" style="position:absolute;top:10px;right:20px;">
     <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
       {{Auth()->user()->username}}
     </button>
@@ -232,18 +241,22 @@ function showSlides(n) {
       <li><a class="dropdown-item" href="{{ URL::to('logout'),app()->getLocale() }}">Logout</a></li>
     </ul>
   </div>
-      <div style="position:absolute;top:10px;right:115px;">
-        <button class="btn btn-primary"><a href="/cartlist" class="text-white text-decoration-none">
+      <div style="position:absolute;top:10px;right:180px;">
+     <a href="/cartlist" class="text-white text-decoration-none">
+         <button class="btn btn-primary">
           Cart({{ $total }})
-        </a>
+      
       </button>
+    </a>
       </div>
     </div>
-    <div style="position:absolute;top:10px;right:200px;">
-      <button class="btn btn-primary"><a href="/myorders" class="text-white text-decoration-none">
+    <div style="position:absolute;top:10px;right:270px;">
+    <a href="/myorders" class="text-white text-decoration-none">
+      <button class="btn btn-primary">
         My Orders
-      </a>
+  
     </button>
+  </a>
     </div>
   </div>
   

@@ -22,28 +22,24 @@
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          <li class="nav-item ">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-              </p>
-            </a>
-          </li>
-
+         
         @if(auth()->user()->role=='Admin')
+        
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="/home" class="nav-link bg-secondary  active mb-2">
+               <i class="nav-icon fas fa-home " ></i>
+               <p class="ps-5">
+                  Home
+               </p>
+             </a>
+            <a href="#" class="nav-link  active">
               <i class="nav-icon fas fa-copy"></i>
               <p>
                  Product Management
-                <i class="fas fa-angle-left right"></i>
                 <!-- <span class="badge badge-info right">6</span> -->
               </p>
             </a>
-            <ul class="nav nav-treeview">
+            <ul class="nav ">
               <li class="nav-item">
                 <!-- here is an url -->
                 <a href="{{ URL::to('admin/products') }}" class="nav-link">
@@ -53,7 +49,7 @@
               </li>
               <li class="nav-item">
                 <!-- Here I did it -->
-                <a href="{{ URL::to('products/create') }}" class="nav-link">
+                <a href="{{ URL::to('admin/products/create') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Add Product</p>
                 </a>
@@ -75,15 +71,14 @@
             </ul>
             
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link active">
                   <i class="nav-icon fas fa-copy"></i>
                   <p>
                     User Management
-                    <i class="fas fa-angle-left right"></i>
                     <!-- <span class="badge badge-info right">6</span> -->
                   </p>
                 </a>
-                <ul class="nav nav-treeview">
+                <ul class="nav ">
                   <li class="nav-item">
                     <!-- here is an url -->
                     <a href="{{ URL::to('admin/users') }}" class="nav-link">
@@ -100,7 +95,12 @@
                   </li>
                
            @endif
-           
+           <a href="{{ URL::to('logout') }}" class="nav nav-link bg-danger active mb-2">
+            <i class="nav-icon material-symbols-outlined text-white " >logout</i>
+            <p class="ps-5">
+              Logout
+            </p>
+          </a>
             <!-- Here ends the User management -->
             </ul>
           </li>  
@@ -109,16 +109,6 @@
       </nav>
       <!-- /.sidebar-menu -->
     <!-- Logout bar -->
-      <div class="user-panel nav-item  bg-danger" style="height: 10px;min-height:6vh;">
-        <a href="{{ URL::to('logout') }}" class="nav-link active d-flex">
-          <i class=" nav-icon material-symbols-outlined  "style="margin-right:15px;">
-            Logout
-          </i>
-          <p class="ps-3">
-           Logout
-          </p>
-        </a>
-      </div>
     
     </div>
     <!-- /.sidebar -->

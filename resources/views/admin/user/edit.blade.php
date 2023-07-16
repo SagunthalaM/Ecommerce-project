@@ -3,7 +3,14 @@
 
 <div class="wrapper">
 <section class="content-wrapper">
-
+    @if(Session::has('success'))
+    <div class="alert alert-success ">
+        {{ Session::get('success') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>    
+ @endif
     <div class="row">
        <div class="col-lg-1">
 
@@ -54,7 +61,8 @@
             </div>
             <!-- Card body ends -->
             <div class="card-footer">
-                <button type="submit" class="btn btn-info">Submit</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="{{ URL::to('admin/users') }}" class="ms-5 btn btn-dark">Back</a>
             </div>
 
             </form>

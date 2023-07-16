@@ -21,11 +21,11 @@ $total = ProductController::cartItem();
      
         <div class="col-sm-10">
             <div class="trending-wrapper">
-                <h4 class="container ms-4 mb-5">Result for Products</h4>
+                <h4 class="container ms-4 mb-5">Your Cart List</h4>
                 <a href="ordernow" class="btn btn-success ms-5 mb-3">Order Now</a><br>
             
                 @foreach ($product as $item )
-                <div class="row searched-item mt-5 mb-3 ms-5 cart-list-devider"
+                <div class="row searched-item mt-2 mb-2 ms-5 cart-list-devider"
                 
                 style="border-bottom:1px solid #ccc;padding-bottom:20px">
                    <div class="col-sm-3">
@@ -50,9 +50,13 @@ $total = ProductController::cartItem();
                 </div>
                 @endforeach
             </div>
+            <div class="container ms-5">
+
+              {!! $product->appends(['sort'=>''])->links() !!}
+            </div>
         </div>
 
-        <div class="dropdown" style="position:absolute;top:10px;right:10px;">
+        <div class="dropdown" style="position:absolute;top:10px;right:20px;">
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
               {{Auth()->user()->username}}
             </button>
@@ -60,28 +64,26 @@ $total = ProductController::cartItem();
               <li><a class="dropdown-item" href="logout">Logout</a></li>
             </ul>
           </div>
-          <div style="position :absolute;top:10px;right:120px;">
-            <button class="btn btn-primary" > <a href="{{ route('products.index') }}" class="text-decoration-none text-white ">
-             Home
-             </a>
-           </button>
+          <div style="position :absolute;top:10px;right:180px;">
+            @if (auth()->user()->role == 'Admin')
+            <a href="{{ route('home') }}" class="btn btn-primary"> Home</a>           
+             @else
+             <a href="{{ route('products.index') }}" class="btn btn-primary"> Home</a>           
+            @endif
            </div>
+           </div>
+           <div style="position:absolute;top:10px;right:270px;">
+            @if (auth()->user()->role == 'Customer')
+            <a href="/myorders" class="text-white text-decoration-none">
+              <button class="btn btn-primary">
+                My Orders
+          
+            </button>
+          </a>
+          @endif
+            </div>
       
-          <div style="position :absolute;top:10px;right:200px;">
-           <button class="btn btn-primary" > <a href="/cartlist" class="text-decoration-none text-white ">
-               Cart({{ $total }})
-            </a>
-          </button>
-          </div>
-         
-          <!--  <a href="ordernow" class="btn btn-success ms-5 mb-5 ">Order Now</a><br>
- -->
-             </div>
-
-
-
-
-    
+             </div>    
 <!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 

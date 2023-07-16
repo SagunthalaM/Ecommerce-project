@@ -1,3 +1,7 @@
+<?php 
+use App\Http\Controllers\ProductController;
+$total = ProductController::cartItem();
+?>
 
 <!DOCTYPE html>
 
@@ -28,12 +32,12 @@
                    <div class="col-sm-3">
                     <a href="products/{{ $item->id }}">
                         <img src="{{ $item->picture }}" 
-                        style="object-fit: contain;width:200px;min-width:30vh;height:150px;"
+                        style="object-fit: contain;width:150px;min-width:30vh;height:100px;"
                         class="trending-image" alt="">
                       
                         </a>
                    </div>
-                   <div class="col-sm-4">
+                   <div class="col-sm-8">
                         <div>
                             <h2>Name : {{ $item->title }}</h2>
                             <h5>Delivery Status : {{ $item->status}}</h5>
@@ -47,9 +51,13 @@
                 </div>
                 @endforeach
             </div>
+            <div class="container ms-5">
+
+              {!! $orders->appends(['sort'=>''])->links() !!}
+            </div>
         </div>
 
-        <div class="dropdown" style="position:absolute;top:10px;right:10px;">
+        <div class="dropdown" style="position:absolute;top:10px;right:20px;">
             <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
               {{Auth()->user()->username}}
             </button>
@@ -57,13 +65,21 @@
               <li><a class="dropdown-item" href="logout">Logout</a></li>
             </ul>
           </div>
-          <div style="position :absolute;top:10px;right:120px;">
-            <button class="btn btn-primary" > <a href="{{ route('products.index') }}" class="text-decoration-none text-white ">
-             Home
-             </a>
+          <div style="position :absolute;top:10px;right:180px;">
+            <a href="{{ route('products.index') }}" class="text-decoration-none text-white ">
+              <button class="btn btn-primary" >
+              Home
+           
            </button>
+          </a>
            </div>
-          
+           <div style="position :absolute;top:10px;right:270px;">
+            <a href="/cartlist" class="text-decoration-none text-white ">
+              <button class="btn btn-primary" >
+               Cart({{ $total }})
+          </button>
+        </a>
+          </div>
           </div>
          
           <!--  <a href="ordernow" class="btn btn-success ms-5 mb-5 ">Order Now</a><br>-->

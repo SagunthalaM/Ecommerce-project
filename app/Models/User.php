@@ -10,6 +10,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use HasFactory;
+    protected $table = 'users';
+    protected $fillable = ['username','email','role'];
     public function isAdmin()
 {
     // Add your logic here to determine if the user is an admin or not

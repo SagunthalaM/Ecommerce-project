@@ -18,6 +18,7 @@
     
 </head>
 <body>
+   
     <h1 class="  text-center ">  {{ __("Login Page") }} </h1>
     <div class="dropdown" style="position:absolute;top:10px;right:50px;">
         <button type="button " class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
@@ -32,26 +33,40 @@
         </ul>
       </div>
 <hr>
-    @if($errors->any())
-    <ul>
-        {!! implode('',$errors->all('<li>
-            <span class="text-danger">:message</span></li>')) !!}
-    </ul>
-    
-    @endif
+   <div class="container">
+    @if(session('success'))
+      
+    <div class="alert alert-success  alert-dismissible fade show" role="alert" style="margin-right: 50px">
+     {{ session('success') }}
+     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+   </div>
+   @endif
+   </div>
 
     <div class="container  fs-5" style="display: flex;justify-content:center;margin-top:50px">
-        <form action="authenticate" method="post" 
+        <form action="authenticate" class="" method="post" novalidate
         class="form-control-lg py-5"
-        style="height:150px;min-height:60vh;width:150px;min-width:60vh;padding:20px 40px;box-shadow:0px 2px 5px lightblue;">
+        style="height:150px;min-height:65vh;width:150px;min-width:60vh;padding:20px 40px;box-shadow:0px 2px 5px lightblue;">
+       
+            @if($errors->any())
       
-             <label for="" class="form-label">{{ __('Email') }}</label>
-             <input type="text" class="form-control mb-3" name="email"
+            {!! implode('',$errors->all('<p class=" form-control  btn btn-danger text-white " >
+               :message</p >')) !!}
+        
+        @endif
+             <label for="email" class="form-label">Email <span style="color:red;">*</span>
+
+             </label>
+             <input type="email" class="form-control @error('email') is-invalid
+              @enderror mb-3" name="email" id="email"
               placeholder="xyz@gmail.com" value="{{ old('email') }}" >
+           
  
-             <label for="" class="form-label">{{ __('Password') }}</label>
-             <input type="password" class="form-control mb-5" name="password" 
-             placeholder="........." >
+             <label for="password" class="form-label">Password <span style="color:red;">*</span></label>
+             <input type="password" class="form-control @error('password')
+                is-invalid @enderror mb-3" name="password" id="password"
+             placeholder="........" >
+       
              <button type="submit" class="form-control bg-primary mb-3
              text-white fs-5">{{ __('Login') }}</button>
              <div class="container">
@@ -66,6 +81,12 @@
         <a href="{{ route('index',app()->getLocale()) }}" class="text-decoration-none text-white">
             {{ __("Back") }}</a>
        </button>
+
+       <!-- boostrap script for js -->
+       <!-- Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+       
 </body>
 </html>
 </div>

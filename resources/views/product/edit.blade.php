@@ -2,45 +2,90 @@
 
 @section('content')
 
-<div class="content-wrapper">
+<div class="content-wrapper" style="background-color: white">
 <div class="container mt-5 mb-5">
-
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>Edit Product</title>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    
+    </head>
+    <body>
+      
+    </body>
+    </html>
     <h2>Update Product</h2>
     <hr>
+    @if(session('success'))
+      
+    <div class="alert alert-success  alert-dismissible  show " role="alert">
+     {{ session('success') }}
+     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+   </div>
+   @endif
     
-    @if($errors->any())
-    <ul>
-        {!! implode('',$errors->all('<li>
-            <span class="text-danger">:message</span></li>')) !!}
-    </ul>
-    
-    @endif
-
     <form action="{{ route('products.update',$product->id) }}" enctype="multipart/form-data" method="POST">
         @csrf
-
-        <div class="mb-3">
-            <label for="picture" class="form-label">Choose Picture</label>
-            <input class="form-control" type="file" name="picture" id="picture" >
-          </div>
-
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" name="title" id="title" value="{{ $product->title }}" placeholder="Enter title">
+            <input type="text" class="form-control @error('title')
+              is-invalid
+            @enderror"
+             name="title" id="title" value="{{ $product->title }}" placeholder="Enter title">
+             <div class="text-danger">
+              @error('title')
+                {{ $message }}
+              @enderror
+             </div>
           </div>
 
           <div class="mb-3">
             <label for="price" class="form-label">Price</label>
-            <input type="text" class="form-control" name="price" id="price" value="{{ $product->price }}" placeholder="Enter price">
+            <input type="text" class="form-control @error('price')
+              is-invalid
+            @enderror"
+             name="price" id="price" value="{{ $product->price }}" placeholder="Enter price">
+             <div class="text-danger">
+              @error('price')
+                {{ $message }}
+              @enderror
+             </div>
           </div>
 
           <div class="mb-3">
             <label for="description" class="form-label">Description</label>
-            <textarea class="form-control" name="description" id="description" placeholder="Enter Description">{{ $product->description }}</textarea>
+            <textarea class="form-control @error('description')
+              is-invalid
+            @enderror"
+              name="description" id="description" placeholder="Enter Description">{{ $product->description }}</textarea>
+              <div class="text-danger">
+                @error('description')
+                  {{ $message }}
+                @enderror
+              </div>
           </div>
-
-          <button type="submit" class="btn btn-primary">Update Product</button>
-
+          <div class="mb-3">
+            <label for="picture" class="form-label">Choose Picture</label>
+            <input class="form-control @error('picture')
+              is-invalid
+            @enderror"
+             type="file" name="picture" id="picture" >
+             <img src="{{ asset($product->picture) }}"   style="object-fit: contain;width:50px;min-width:10vh;height:50px;" alt="">
+             <div class="text-danger">
+              @error('picture')
+                {{ $message }}
+              @enderror
+             </div>
+          </div>
+<div>
+  <button type="submit" class="btn btn-primary">Update Product</button>
+  <a href="{{ URL::to('admin/products') }}" class="btn btn-dark ms-3">Back</a>
+</div>
     </form>
 
 </div>

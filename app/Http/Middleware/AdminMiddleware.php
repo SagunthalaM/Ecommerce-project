@@ -25,7 +25,7 @@ class AdminMiddleware
                 return redirect('/products')->with('message','Access Denied as you are not Admin');
             }
         }else{
-            return redirect('/login')->with('message','Login to access the website');
+            return redirect('/login')->back()->withErrors('message','Login to access the website');
 
         }
         return $next($request);

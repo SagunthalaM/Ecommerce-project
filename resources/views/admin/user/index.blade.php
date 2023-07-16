@@ -1,77 +1,79 @@
 @extends('backend.layouts.app')
-
 @section('content')
 
-<!-- Content Wrapper.Contains page content -->
 
 <div class="content-wrapper">
 
- <!-- Main content -->
- <section class="content">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12">
-      
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">All Users</h3>
-            </div>
-
-            <!-- /.card-header -->
-            <div class="card-body">
-              <!-- Add user button -->
-                <a href="{{ URL::to('admin/add-user') }}" class='btn btn-primary text-white mb-3'>Add User</a>
-              
-              <table id="example1" class="table table-hover table-bordered ">
-                <thead class="table-dark">
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>All users</title>
+        <link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+        <style>
+            .alert {
+     position: relative;
+     z-index: 1;
+}
+        </style>
+    </head>
+    <body>
+       
+      <section style="padding-top:10px">
+        @if(Session::has('danger'))
+        <div class="alert alert-danger ">
+            {{ Session::get('danger') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>    
+     @endif
+       
+        <div class="container mb-5">
+            <div class="row">
+                <div class="col">
+                <table id="data" class="table table-striped  table-hover">
+            <thead class="table-dark" >
                 <tr>
-                  <th>SL</th>
-                  <th>Name</th>
-                  <th> Email</th>
-                  <th>Role</th>
-                  <th>Action</th>
+                    <th>Id</th>
+                    <th>User Id</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Action</th>
                 </tr>
-                </thead>
-                <tbody>
-                  @foreach ($users as $row)
-                    
-                  <tr>
-                    <td>{{ $row->id}}</td>
-                    <td>{{ $row->username }}</td>
-                    <td>{{ $row->email }}</td>
-                    <td>{{ $row->role }}</td>
-                    <td>
-                      <a href="{{ URL::to('admin/edit-user/'.$row->id) }}" class="btn btn-sm btn-info">Edit</a>
-                      <a href="{{ URL::to('admin/delete-user/'.$row->id) }}" class="btn btn-sm btn-danger">Delete</a>
-                   
-                    </td>
-                  </tr>
-                  @endforeach
-                </tbody>
-             
-              </table>
+            </thead>
+       
+        </table>
+                </div>
             </div>
-           <div class="col-md-12">
-            <!-- here we are adding use Illuminate/pagination/paginator
-            in the AppServiceProvider.php and 
-            also
-              public function boot(): void
-              {
-                  Paginator::useBootstrap();
-              } -->
-            {!! $users->appends(['sort'=>''])->links() !!}
-           </div>
-
-            <!-- /.card-body -->
-          </div>
-          <!-- /.card -->
         </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-    </div>
-    <!-- /.container-fluid -->
-  </section>
-  <!-- /.content -->
+    
+    </section>
+    
+        <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#data').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: "{{ route('admin.user.index') }}",
+                    columns: [
+                        { data: 'DT_RowIndex',name:'DT_RowIndex',orderable:false},
+                        { data:'id', name:'id'},
+                        { data: 'username', name: 'username' },
+                        { data: 'email', name: 'email' },
+                        { data: 'role', name: 'role' },
+                        {data: 'actions', name: 'actions', orderable: false, searchable: false}
+                    ]
+                });
+            });
+        </script>
+    </body>
+    </html>
 </div>
-  @endsection
+
+
+@endsection()
